@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<workspace_user>
+	<active_project>
+		<label>Maginot Client</label>
+	</active_project>
+	<projects>
+		<project>
+			<label>Maginot Client</label>
+			<showfiles>false</showfiles>
+			<fileitem>
+				<path>WODetails.java</path>
+				<collapsedfolds>1190</collapsedfolds>
+			</fileitem>
+		</project>
+	</projects>
+	<open_files>
+		<docitem>
+			<path>WODetails.java</path>
+			<source>true</source>
+			<index>0</index>
+			<active>false</active>
+		</docitem>
+		<docitem>
+			<path>MainGui.java</path>
+			<source>true</source>
+			<index>1</index>
+			<active>false</active>
+		</docitem>
+	</open_files>
+</workspace_user>
