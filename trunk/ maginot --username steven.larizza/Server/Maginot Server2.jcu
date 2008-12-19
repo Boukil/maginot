@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<workspace_user>
+	<active_project>
+		<label>Maginot Server</label>
+	</active_project>
+	<projects>
+		<project>
+			<label>Maginot Server</label>
+			<showfiles>false</showfiles>
+			<fileitem>
+				<path>TCPServer.java</path>
+				<collapsedfolds>3055;2911;2853;2795;2758;2751;2706;2616;2527;2438;12;109;71</collapsedfolds>
+			</fileitem>
+		</project>
+	</projects>
+	<open_files>
+		<docitem>
+			<path>TCPServer.java</path>
+			<source>true</source>
+			<index>0</index>
+			<active>true</active>
+		</docitem>
+	</open_files>
+</workspace_user>
