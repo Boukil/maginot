@@ -9,6 +9,10 @@
 			<label>Maginot Client</label>
 			<showfiles>false</showfiles>
 			<fileitem>
+				<path>MainGui.java</path>
+				<collapsedfolds>0;188</collapsedfolds>
+			</fileitem>
+			<fileitem>
 				<path>WODetails.java</path>
 				<collapsedfolds>1190</collapsedfolds>
 			</fileitem>
@@ -16,16 +20,10 @@
 	</projects>
 	<open_files>
 		<docitem>
-			<path>WODetails.java</path>
-			<source>true</source>
-			<index>0</index>
-			<active>false</active>
-		</docitem>
-		<docitem>
 			<path>MainGui.java</path>
 			<source>true</source>
-			<index>1</index>
-			<active>false</active>
+			<index>0</index>
+			<active>true</active>
 		</docitem>
 	</open_files>
 </workspace_user>
