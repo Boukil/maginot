@@ -1,4 +1,0 @@
-"C:\\Documents and Settings\\steven.larizza.ECTORCOUNTYISD\\Desktop\\Maginot System\\development\\2.9.7\\Maginot Server\\Emailer.java"
-"C:\\Documents and Settings\\steven.larizza.ECTORCOUNTYISD\\Desktop\\Maginot System\\development\\2.9.7\\Maginot Server\\TCPServer.java"
-"C:\\Documents and Settings\\steven.larizza.ECTORCOUNTYISD\\Desktop\\Maginot System\\development\\2.9.7\\Maginot Server\\time.java"
-"C:\\Documents and Settings\\steven.larizza.ECTORCOUNTYISD\\Desktop\\Maginot System\\development\\2.9.7\\Maginot Server\\TransferObject.java"

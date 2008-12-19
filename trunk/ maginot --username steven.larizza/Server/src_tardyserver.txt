@@ -1,4 +1,0 @@
-"C:\\Documents and Settings\\larizzas\\My Documents\\Network Tardy System\\server\\Instruction.java"
-"C:\\Documents and Settings\\larizzas\\My Documents\\Network Tardy System\\server\\SavitchIn.java"
-"C:\\Documents and Settings\\larizzas\\My Documents\\Network Tardy System\\server\\TCPServer.java"
-"C:\\Documents and Settings\\larizzas\\My Documents\\Network Tardy System\\server\\Transfer.java"
