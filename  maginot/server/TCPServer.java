@@ -262,7 +262,7 @@ class Operations extends Thread
 			        
 			        
 			        //make sure the students table in this database exists. create it if it doesn't
-					sql = "CREATE TABLE IF NOT EXISTS workorders (WORK_ORDER_NUMBER INTEGER NOT NULL PRIMARY KEY, ECISD_NUMBER INTEGER, STATUS INTEGER NOT NULL, PROBLEM VARCHAR(10000) NOT NULL, RESOLUTION VARCHAR(10000), CAMPUS INTEGER NOT NULL, OPENED_BY INTEGER NOT NULL, CLOSED_BY INTEGER,MODEL VARCHAR(500),DATE_OPEN VARCHAR(20) NOT NULL, DATE_CLOSED VARCHAR(20),FIRST_NAME VARCHAR(200) NOT NULL, LAST_NAME VARCHAR(200) NOT NULL, ROOM_NUMBER VARCHAR(50), PHONE VARCHAR(100), PRIORITY INTEGER, SERVICE_TAG VARCHAR(30),ASSIGNED_TO VARCHAR(30) NOT NULL,FOLLOW_UP_SENT boolean,DATE_FOLLOW_UP_SENT VARCHAR(30),TIME_TO_COMPLETION VARCHAR(30));";			        
+					sql = "CREATE TABLE IF NOT EXISTS workorders (work_order_number INTEGER NOT NULL PRIMARY KEY, asset_number INTEGER, status INTEGER NOT NULL, problem VARCHAR(10000) NOT NULL, resolution VARCHAR(10000), campus INTEGER NOT NULL, opened_by INTEGER NOT NULL, closed_by INTEGER,model VARCHAR(500),date_open VARCHAR(20) NOT NULL, date_closed VARCHAR(20),first_name VARCHAR(200) NOT NULL, last_name VARCHAR(200) NOT NULL, room_number VARCHAR(50), phone VARCHAR(100), priority INTEGER, service_tag VARCHAR(30),assigned_to VARCHAR(30) NOT NULL,follow_up_sent boolean,date_follow_up_sent VARCHAR(30),time_to_completion VARCHAR(30));";			        
 			        pstmt = connection.prepareStatement(sql);
 			        pstmt.executeUpdate();
 			        
@@ -298,7 +298,7 @@ class Operations extends Thread
 							messagetco.putMessage(columnNamesBuffer.toString());
 						break;
 						case 2: //send a copy of the open workorders for this campus
-							sql = "SELECT work_order_number,priority,ecisd_number,problem,campus,date_open,room_number,assigned_to FROM workorders WHERE status=1 AND CAMPUS='"+data+"';";	
+							sql = "SELECT work_order_number,priority,asset_number,problem,campus,date_open,room_number,assigned_to FROM workorders WHERE status=1 AND campus='"+data+"';";	
 							pstmt = connection.prepareStatement(sql);
 							rs = pstmt.executeQuery();
 							
@@ -326,7 +326,7 @@ class Operations extends Thread
 					        		messagetco.putMessage(object[c][d]);
 					        	}
 					        }
-					       columns_selected = "WO #,Priority,ECISD #,Problem,Campus,Date Open, Room #, Assigned To";
+					       columns_selected = "WO #,Priority,Asset #,Problem,Campus,Date Open, Room #, Assigned To";
 					       messagetco.putMessage(columns_selected);
 						break;
 						case 3: //translate UID into username
@@ -343,7 +343,7 @@ class Operations extends Thread
 							
 						break;
 						case 4: //send the pending open work orders
-							sql = "SELECT work_order_number,Priority,ecisd_number,problem,campus,date_open,room_number,assigned_to FROM workorders WHERE status=0;";	
+							sql = "SELECT work_order_number,priority,asset_number,problem,campus,date_open,room_number,assigned_to FROM workorders WHERE status=0;";	
 							pstmt = connection.prepareStatement(sql);
 							rs = pstmt.executeQuery();
 							
@@ -370,11 +370,11 @@ class Operations extends Thread
 					        		messagetco.putMessage(object[c][d]);
 					        	}
 					        }
-							columns_selected = "WO #,Priority,ECISD #,Problem,Campus,Date Open, Room #, Assigned To";
+							columns_selected = "WO #,Priority,Asset #,Problem,Campus,Date Open, Room #, Assigned To";
 					       	messagetco.putMessage(columns_selected);						
 					    break;
 						case 5: //send the pending closed work orders
-							sql = "SELECT work_order_number,priority,ecisd_number,problem,campus,date_open,room_number,assigned_to,follow_up_sent FROM workorders WHERE status=2;";
+							sql = "SELECT work_order_number,priority,asset_number,problem,campus,date_open,room_number,assigned_to,follow_up_sent FROM workorders WHERE status=2;";
 							pstmt = connection.prepareStatement(sql);
 							rs = pstmt.executeQuery();
 							
@@ -401,24 +401,24 @@ class Operations extends Thread
 					        		messagetco.putMessage(object[c][d]);
 					        	}
 					        }
-					        columns_selected = "WO #,Priority,ECISD #,Problem,Campus,Date Open, Room #, Assigned To,E-mail Sent?";
+					        columns_selected = "WO #,Priority,Asset #,Problem,Campus,Date Open, Room #, Assigned To,E-mail Sent?";
 					       	messagetco.putMessage(columns_selected);	
 						break;
 						case 6: //open w/o with a status of 1 (open)
 							StringTokenizer tokenizer = new StringTokenizer(data,",");
 							
-							int wonum,ecisdnum,status,opened_by,closed_by;
+							int wonum,assetnum,status,opened_by,closed_by;
 							String problem,resolution,model,date_open,date_closed,firstname,lastname,roomnumber,phone,priority,servicetag,assignedto;
 							
 							
 							wonum = nextWorkOrderNumber();
 							
-							String temp_ecisd = tokenizer.nextToken();
+							String temp_asset = tokenizer.nextToken();
 							
-							if(!temp_ecisd.equals("null"))
-								ecisdnum = Integer.parseInt(temp_ecisd);
+							if(!temp_asset.equals("null"))
+								assetnum = Integer.parseInt(temp_asset);
 							else
-								ecisdnum = -1;
+								assetnum = -1;
 								
 							status = 1;
 							problem = tokenizer.nextToken();
@@ -454,17 +454,17 @@ class Operations extends Thread
 							opened_by = Integer.parseInt(s); //the current connected user's id
 							//-----
 							
-							if(ecisdnum == -1)
+							if(assetnum == -1)
 							{
-								sql = "INSERT INTO workorders (work_order_number,ecisd_number,status,problem,resolution,campus,opened_by,closed_by,model,date_open,date_closed,first_name,last_name,room_number,phone,priority,service_tag,assigned_to) VALUES (" 
+								sql = "INSERT INTO workorders (work_order_number,asset_number,status,problem,resolution,campus,opened_by,closed_by,model,date_open,date_closed,first_name,last_name,room_number,phone,priority,service_tag,assigned_to) VALUES (" 
 									+ wonum +","+ null +"," + status + ",'"+ problem + "'," + "'" + resolution + "','"+ campus + "',"+ opened_by + "," + closed_by +",'"+ model +"','"+ date_open +"','" + date_closed + "','" + firstname +"','"+ lastname +"','"+ roomnumber +"','"+ phone +"',"+ priority + ",'" + servicetag + "','" + assignedto + "');";
 								pstmt = connection.prepareStatement(sql);
 								pstmt.executeUpdate();
 							}
 							else
 							{
-								sql = "INSERT INTO workorders (work_order_number,ecisd_number,status,problem,resolution,campus,opened_by,closed_by,model,date_open,date_closed,first_name,last_name,room_number,phone,priority,service_tag,assigned_to) VALUES (" 
-									+ wonum +","+ ecisdnum +"," + status + ",'"+ problem + "'," + "'" + resolution + "','"+ campus + "',"+ opened_by + "," + closed_by +",'"+ model +"','"+ date_open +"','" + date_closed + "','" + firstname +"','"+ lastname +"','"+ roomnumber +"','"+ phone +"',"+ priority + ",'" + servicetag + "','" + assignedto + "');";
+								sql = "INSERT INTO workorders (work_order_number,asset_number,status,problem,resolution,campus,opened_by,closed_by,model,date_open,date_closed,first_name,last_name,room_number,phone,priority,service_tag,assigned_to) VALUES (" 
+									+ wonum +","+ assetnum +"," + status + ",'"+ problem + "'," + "'" + resolution + "','"+ campus + "',"+ opened_by + "," + closed_by +",'"+ model +"','"+ date_open +"','" + date_closed + "','" + firstname +"','"+ lastname +"','"+ roomnumber +"','"+ phone +"',"+ priority + ",'" + servicetag + "','" + assignedto + "');";
 								pstmt = connection.prepareStatement(sql);
 								pstmt.executeUpdate();
 							}
@@ -476,12 +476,12 @@ class Operations extends Thread
 							tokenizer = new StringTokenizer(data,",");
 
 							wonum = nextWorkOrderNumber();
-							temp_ecisd = tokenizer.nextToken();
+							temp_asset = tokenizer.nextToken();
 							
-							if(!temp_ecisd.equals("null"))
-								ecisdnum = Integer.parseInt(temp_ecisd);
+							if(!temp_asset.equals("null"))
+								assetnum = Integer.parseInt(temp_asset);
 							else
-								ecisdnum = -1;
+								assetnum = -1;
 							status = 4;
 							problem = tokenizer.nextToken();
 							resolution = tokenizer.nextToken();
@@ -515,15 +515,15 @@ class Operations extends Thread
 							}
 							opened_by = Integer.parseInt(s); //the current connected user's id
 							//-----------------------------
-							if(ecisdnum == -1)
+							if(assetnum == -1)
 							{
-								sql = "INSERT INTO workorders (work_order_number,ecisd_number,status,problem,resolution,campus,opened_by,closed_by,model,date_open,date_closed,first_name,last_name,room_number,phone,priority,service_tag,assigned_to) VALUES (" + wonum +","+ null +"," + status + ",'"+ problem + "','" + resolution + "',"+ campus + ","+ opened_by + "," + closed_by +",'"+ model +"','"+ date_open +"','" + date_closed + "','" + firstname +"','"+ lastname +"','"+ roomnumber +"','"+ phone +"',"+ priority + ",'" + servicetag + "','" + assignedto + "');";
+								sql = "INSERT INTO workorders (work_order_number,asset_number,status,problem,resolution,campus,opened_by,closed_by,model,date_open,date_closed,first_name,last_name,room_number,phone,priority,service_tag,assigned_to) VALUES (" + wonum +","+ null +"," + status + ",'"+ problem + "','" + resolution + "',"+ campus + ","+ opened_by + "," + closed_by +",'"+ model +"','"+ date_open +"','" + date_closed + "','" + firstname +"','"+ lastname +"','"+ roomnumber +"','"+ phone +"',"+ priority + ",'" + servicetag + "','" + assignedto + "');";
 								pstmt = connection.prepareStatement(sql);
 								pstmt.executeUpdate();
 							}
 							else
 							{
-								sql = "INSERT INTO workorders (work_order_number,ecisd_number,status,problem,resolution,campus,opened_by,closed_by,model,date_open,date_closed,first_name,last_name,room_number,phone,priority,service_tag,assigned_to) VALUES (" + wonum +","+ ecisdnum +"," + status + ",'"+ problem + "','" + resolution + "',"+ campus + ","+ opened_by + "," + closed_by +",'"+ model +"','"+ date_open +"','" + date_closed + "','" + firstname +"','"+ lastname +"','"+ roomnumber +"','"+ phone +"',"+ priority + ",'" + servicetag + "','" + assignedto + "');";
+								sql = "INSERT INTO workorders (work_order_number,asset_number,status,problem,resolution,campus,opened_by,closed_by,model,date_open,date_closed,first_name,last_name,room_number,phone,priority,service_tag,assigned_to) VALUES (" + wonum +","+ assetnum +"," + status + ",'"+ problem + "','" + resolution + "',"+ campus + ","+ opened_by + "," + closed_by +",'"+ model +"','"+ date_open +"','" + date_closed + "','" + firstname +"','"+ lastname +"','"+ roomnumber +"','"+ phone +"',"+ priority + ",'" + servicetag + "','" + assignedto + "');";
 								pstmt = connection.prepareStatement(sql);
 								pstmt.executeUpdate();
 							}
@@ -541,12 +541,12 @@ class Operations extends Thread
 							priority = tokenizer.nextToken();
 							phone = tokenizer.nextToken();
 							
-							temp_ecisd = tokenizer.nextToken();
+							temp_asset = tokenizer.nextToken();
 							
-							if(!temp_ecisd.equals("null"))
-								ecisdnum = Integer.parseInt(temp_ecisd);
+							if(!temp_asset.equals("null"))
+								assetnum = Integer.parseInt(temp_asset);
 							else
-								ecisdnum = -1;
+								assetnum = -1;
 								
 							model = tokenizer.nextToken();
 							problem = tokenizer.nextToken();
@@ -572,15 +572,15 @@ class Operations extends Thread
 							date_closed =  timeobject.GetCurrentYear_asInt() + "-" + timeobject.GetCurrentMonth_asInt() + "-" + timeobject.GetCurrentDay_asInt()+ "-" + timeobject.GetMilitaryTime_asString();
 							
 							
-							if(ecisdnum == -1)
+							if(assetnum == -1)
 							{
-								sql = "UPDATE workorders SET ECISD_NUMBER = " + null + " WHERE work_order_number = " + wonum + ";";
+								sql = "UPDATE workorders SET asset_number = " + null + " WHERE work_order_number = " + wonum + ";";
 								pstmt = connection.prepareStatement(sql);
 								pstmt.executeUpdate();
 							}
 							else
 							{
-								sql = "UPDATE workorders SET ECISD_NUMBER = " + ecisdnum + " WHERE work_order_number = " + wonum + ";";
+								sql = "UPDATE workorders SET asset_number = " + assetnum + " WHERE work_order_number = " + wonum + ";";
 								pstmt = connection.prepareStatement(sql);
 								pstmt.executeUpdate();
 							}
@@ -639,12 +639,12 @@ class Operations extends Thread
 							priority = tokenizer.nextToken();
 							phone = tokenizer.nextToken();
 							
-							temp_ecisd = tokenizer.nextToken();
+							temp_asset = tokenizer.nextToken();
 							
-							if(!temp_ecisd.equals("null"))
-								ecisdnum = Integer.parseInt(temp_ecisd);
+							if(!temp_asset.equals("null"))
+								assetnum = Integer.parseInt(temp_asset);
 							else
-								ecisdnum = -1;
+								assetnum = -1;
 							model = tokenizer.nextToken();
 							problem = tokenizer.nextToken();
 							resolution = tokenizer.nextToken();
@@ -664,15 +664,15 @@ class Operations extends Thread
 								s = rs.getString(1);
 							}
 							
-							if(ecisdnum == -1)
+							if(assetnum == -1)
 							{
-								sql = "UPDATE workorders SET ECISD_NUMBER = " + null + " WHERE work_order_number = " + wonum + ";";
+								sql = "UPDATE workorders SET asset_number = " + null + " WHERE work_order_number = " + wonum + ";";
 								pstmt = connection.prepareStatement(sql);
 								pstmt.executeUpdate();
 							}
 							else
 							{
-								sql = "UPDATE workorders SET ECISD_NUMBER = " + ecisdnum + " WHERE work_order_number = " + wonum + ";";
+								sql = "UPDATE workorders SET asset_number = " + assetnum + " WHERE work_order_number = " + wonum + ";";
 								pstmt = connection.prepareStatement(sql);
 								pstmt.executeUpdate();
 							}
@@ -721,7 +721,7 @@ class Operations extends Thread
 							pstmt.executeUpdate();
 						break;
 						case 10: //send the machine history
-							sql = "SELECT * FROM workorders WHERE ecisd_number= "+ data + ";";
+							sql = "SELECT * FROM workorders WHERE asset_number= "+ data + ";";
 							pstmt = connection.prepareStatement(sql);
 							rs = pstmt.executeQuery();
 							
@@ -785,7 +785,7 @@ class Operations extends Thread
 							tokenizer = new StringTokenizer(data,",");
 							
 							wonum = nextWorkOrderNumber();
-							ecisdnum = Integer.parseInt(tokenizer.nextToken());
+							assetnum = Integer.parseInt(tokenizer.nextToken());
 							status = 0;
 							problem = tokenizer.nextToken();
 							resolution = tokenizer.nextToken();
@@ -821,8 +821,8 @@ class Operations extends Thread
 							//-----------------------------
 						
 						
-							sql = "INSERT INTO workorders (work_order_number,ecisd_number,status,problem,resolution,campus,opened_by,closed_by,model,date_open,date_closed,first_name,last_name,room_number,phone,priority,service_tag,assigned_to) VALUES (" 
-									+ wonum +","+ ecisdnum +"," + status + ",'"+ problem + "'," + "'" + resolution + "','"+ campus + "',"+ opened_by + "," + closed_by +",'"+ model +"','"+ date_open +"','" + date_closed + "','" + firstname +"','"+ lastname +"','"+ roomnumber +"','"+ phone +"',"+ priority + ",'" + servicetag + "','" + assignedto + "');";
+							sql = "INSERT INTO workorders (work_order_number,asset_number,status,problem,resolution,campus,opened_by,closed_by,model,date_open,date_closed,first_name,last_name,room_number,phone,priority,service_tag,assigned_to) VALUES (" 
+									+ wonum +","+ assetnum +"," + status + ",'"+ problem + "'," + "'" + resolution + "','"+ campus + "',"+ opened_by + "," + closed_by +",'"+ model +"','"+ date_open +"','" + date_closed + "','" + firstname +"','"+ lastname +"','"+ roomnumber +"','"+ phone +"',"+ priority + ",'" + servicetag + "','" + assignedto + "');";
 							pstmt = connection.prepareStatement(sql);
 							pstmt.executeUpdate();
 						break;
@@ -836,7 +836,7 @@ class Operations extends Thread
 							roomnumber = tokenizer.nextToken();
 							priority = tokenizer.nextToken();
 							phone = tokenizer.nextToken();
-							ecisdnum = Integer.parseInt(tokenizer.nextToken());
+							assetnum = Integer.parseInt(tokenizer.nextToken());
 							model = tokenizer.nextToken();
 							problem = tokenizer.nextToken();
 							resolution = tokenizer.nextToken();
@@ -860,7 +860,7 @@ class Operations extends Thread
 							timeobject = new time();
 							date_open =  timeobject.GetCurrentYear_asInt() + "-" + timeobject.GetCurrentMonth_asInt() + "-" + timeobject.GetCurrentDay_asInt()+ "-" + timeobject.GetMilitaryTime_asString();
 							
-							sql = "UPDATE workorders SET ECISD_NUMBER = " + ecisdnum + " WHERE work_order_number = " + wonum + ";";
+							sql = "UPDATE workorders SET asset_number = " + assetnum + " WHERE work_order_number = " + wonum + ";";
 							pstmt = connection.prepareStatement(sql);
 							pstmt.executeUpdate();
 							sql = "UPDATE workorders SET status = " + status + " WHERE work_order_number = " + wonum + ";";
@@ -916,7 +916,7 @@ class Operations extends Thread
 							roomnumber = tokenizer.nextToken();
 							priority = tokenizer.nextToken();
 							phone = tokenizer.nextToken();
-							ecisdnum = Integer.parseInt(tokenizer.nextToken());
+							assetnum = Integer.parseInt(tokenizer.nextToken());
 							model = tokenizer.nextToken();
 							problem = tokenizer.nextToken();
 							resolution = tokenizer.nextToken();
@@ -940,7 +940,7 @@ class Operations extends Thread
 							timeobject = new time();
 							date_open =  timeobject.GetCurrentYear_asInt() + "-" + timeobject.GetCurrentMonth_asInt() + "-" + timeobject.GetCurrentDay_asInt()+ "-" + timeobject.GetMilitaryTime_asString();
 							
-							sql = "UPDATE workorders SET ECISD_NUMBER = " + ecisdnum + " WHERE work_order_number = " + wonum + ";";
+							sql = "UPDATE workorders SET asset_number = " + assetnum + " WHERE work_order_number = " + wonum + ";";
 							pstmt = connection.prepareStatement(sql);
 							pstmt.executeUpdate();
 							sql = "UPDATE workorders SET status = " + status + " WHERE work_order_number = " + wonum + ";";
@@ -1091,7 +1091,7 @@ class Operations extends Thread
 						break;
 						//case 22 is reserved
 						case 23://send a copy of ALL the open work orders
-							sql = "SELECT work_order_number,priority,ecisd_number,problem,campus,date_open,room_number,assigned_to,follow_up_sent FROM workorders WHERE status=1;";	
+							sql = "SELECT work_order_number,priority,asset_number,problem,campus,date_open,room_number,assigned_to,follow_up_sent FROM workorders WHERE status=1;";	
 							pstmt = connection.prepareStatement(sql);
 							rs = pstmt.executeQuery();
 							
@@ -1117,7 +1117,7 @@ class Operations extends Thread
 					        		messagetco.putMessage(object[c][d]);
 					        	}
 					        }
-					        columns_selected = "WO #,Priority,ECISD #,Problem,Campus,Date Open, Room #, Assigned To";
+					        columns_selected = "WO #,Priority,Asset #,Problem,Campus,Date Open, Room #, Assigned To";
 					       	messagetco.putMessage(columns_selected);
 						break;
 						case 24: //update the users password.
@@ -1220,7 +1220,7 @@ class Operations extends Thread
 							}
 							
 							
-							sql = "SELECT work_order_number,priority,ecisd_number,problem,campus,date_open,room_number,assigned_to,follow_up_sent FROM workorders WHERE assigned_to='"+ name+"' AND status=1;";	
+							sql = "SELECT work_order_number,priority,asset_number,problem,campus,date_open,room_number,assigned_to,follow_up_sent FROM workorders WHERE assigned_to='"+ name+"' AND status=1;";	
 							pstmt = connection.prepareStatement(sql);
 							rs = pstmt.executeQuery();
 							
@@ -1246,7 +1246,7 @@ class Operations extends Thread
 					        		messagetco.putMessage(object[c][d]);
 					        	}
 					        }
-					        columns_selected = "WO #,Priority,ECISD #,Problem,Campus,Date Open, Room #, Assigned To";
+					        columns_selected = "WO #,Priority,Asset #,Problem,Campus,Date Open, Room #, Assigned To";
 					       	messagetco.putMessage(columns_selected);
 						break;
 						case 30: //authenticates the version
@@ -1366,12 +1366,12 @@ class Operations extends Thread
 							status = 1;
 							wonum = Integer.parseInt(tokenizer.nextToken());
 							
-							temp_ecisd = tokenizer.nextToken();
+							temp_asset = tokenizer.nextToken();
 							
-							if(!temp_ecisd.equals("null"))
-								ecisdnum = Integer.parseInt(temp_ecisd);
+							if(!temp_asset.equals("null"))
+								assetnum = Integer.parseInt(temp_asset);
 							else
-								ecisdnum = -1;
+								assetnum = -1;
 							
 							problem = tokenizer.nextToken();
 							resolution = tokenizer.nextToken();
@@ -1385,15 +1385,15 @@ class Operations extends Thread
 							servicetag = tokenizer.nextToken();
 							assignedto = tokenizer.nextToken();
 							
-							if(ecisdnum == -1)
+							if(assetnum == -1)
 							{
-								sql = "UPDATE workorders SET ECISD_NUMBER = " +null + " WHERE work_order_number = " + wonum + ";";
+								sql = "UPDATE workorders SET asset_number = " +null + " WHERE work_order_number = " + wonum + ";";
 								pstmt = connection.prepareStatement(sql);
 								pstmt.executeUpdate();
 							}
 							else
 							{
-								sql = "UPDATE workorders SET ECISD_NUMBER = " + ecisdnum + " WHERE work_order_number = " + wonum + ";";
+								sql = "UPDATE workorders SET asset_number = " + assetnum + " WHERE work_order_number = " + wonum + ";";
 								pstmt = connection.prepareStatement(sql);
 								pstmt.executeUpdate();
 							}
@@ -1784,7 +1784,7 @@ class Operations extends Thread
 							
 							timeobject = new time();
 							date_open =  timeobject.GetCurrentYear_asInt() + "-" + timeobject.GetCurrentMonth_asInt() + "-" + timeobject.GetCurrentDay_asInt()+ "-" + timeobject.GetMilitaryTime_asString();
-							sql = "UPDATE workorders set date_follow_up_sent='" + date_open +"' where work_order_number="+data +";";
+							sql = "UPDATE workorders SET date_follow_up_sent='" + date_open +"' where work_order_number="+data +";";
 							pstmt = connection.prepareStatement(sql);
 							pstmt.executeUpdate();
 							
@@ -1794,16 +1794,16 @@ class Operations extends Thread
 						break;
 						case 93: //set the email sent as false.
 							
-							sql = "UPDATE workorders set follow_up_sent=0 where work_order_number=" + data +";";
+							sql = "UPDATE workorders SET follow_up_sent=0 WHERE work_order_number=" + data +";";
 							pstmt = connection.prepareStatement(sql);
 							pstmt.executeUpdate();
 							
-							sql = "UPDATE workorders set date_follow_up_sent=null where work_order_number="+data +";";
+							sql = "UPDATE workorders SET date_follow_up_sent=null WHERE work_order_number="+data +";";
 							pstmt = connection.prepareStatement(sql);
 							pstmt.executeUpdate();	
 						break;
 						case 94://get the status of the email.
-								sql = "SELECT FOLLOW_UP_SENT from workorders where work_order_number='"+data+"';";
+								sql = "SELECT follow_up_sent FROM workorders WHERE work_order_number='"+data+"';";
 								pstmt = connection.prepareStatement(sql);
 								rs = pstmt.executeQuery();
 								name ="";
@@ -1820,14 +1820,14 @@ class Operations extends Thread
 						//case 11x are used for the email document and Mail configs.
 						case 100: // save the email body
 							ensureConfigExists();
-							sql = "UPDATE email SET config= '" + data.substring(data.indexOf("=")+1,data.length()) +  "' where property='" +data.substring(0,data.indexOf("=")) +"';";
+							sql = "UPDATE email SET config= '" + data.substring(data.indexOf("=")+1,data.length()) +  "' WHERE property='" +data.substring(0,data.indexOf("=")) +"';";
 							pstmt = connection.prepareStatement(sql);
 							pstmt.executeUpdate();
 						break;
 						case 101: //read the config
 							ensureConfigExists();
 							data = data.substring(0,data.indexOf("="));
-							sql = "Select config from email where property='"+data+"';";
+							sql = "SELECT config FROM email WHERE property='"+data+"';";
 							pstmt = connection.prepareStatement(sql);
 							rs = pstmt.executeQuery();
 							name ="";
@@ -1842,7 +1842,7 @@ class Operations extends Thread
 							messagetco.putMessage(name);
 						break;
 						case 110://get the TTC for a Work order
-							sql = "Select time_to_completion FROM workorders WHERE work_order_number='"+data+"';";
+							sql = "SELECT time_to_completion FROM workorders WHERE work_order_number='"+data+"';";
 							pstmt = connection.prepareStatement(sql);
 							rs = pstmt.executeQuery();
 							name = "";
@@ -1857,7 +1857,7 @@ class Operations extends Thread
 							messagetco.putMessage(name);
 						break;
 						case 111://calculate the TTC for a work order and set it in the database so it doesn't have to be calculated again.
-							sql = "Select date_open FROM workorders WHERE work_order_number='"+data+"';";
+							sql = "SELECT date_open FROM workorders WHERE work_order_number='"+data+"';";
 							pstmt = connection.prepareStatement(sql);
 							rs = pstmt.executeQuery();
 							String start_time = "";
@@ -1865,7 +1865,7 @@ class Operations extends Thread
 							{
 								start_time =  rs.getString(1);
 							}
-							sql = "Select date_closed FROM workorders WHERE work_order_number='"+data+"';";
+							sql = "SELECT date_closed FROM workorders WHERE work_order_number='"+data+"';";
 							pstmt = connection.prepareStatement(sql);
 							rs = pstmt.executeQuery();
 							String end_time = "";
@@ -2113,7 +2113,7 @@ class Operations extends Thread
 			PreparedStatement pstmt;
 			
 			//gets the email body
-			sql = "SELECT config from email where property='body';";
+			sql = "SELECT config FROM email WHERE property='body';";
 			pstmt = connection.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 		
@@ -2126,7 +2126,7 @@ class Operations extends Thread
 				name = "0";
 			}
 			
-			sql = "SELECT config from email where property='domain';";
+			sql = "SELECT config FROM email WHERE property='domain';";
 			pstmt = connection.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 		
@@ -2138,7 +2138,7 @@ class Operations extends Thread
 			{
 				name = "0";
 			}
-			sql = "SELECT closed_by from workorders where work_order_number=" + wonum + ";";
+			sql = "SELECT closed_by FROM workorders WHERE work_order_number=" + wonum + ";";
 			pstmt = connection.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
@@ -2162,7 +2162,7 @@ class Operations extends Thread
 			}
 			
 			//figures out who the email is going to
-			sql = "SELECT first_name from workorders where work_order_number=" + wonum + ";";
+			sql = "SELECT first_name FROM workorders WHERE work_order_number=" + wonum + ";";
 			pstmt = connection.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
@@ -2174,7 +2174,7 @@ class Operations extends Thread
 			{
 				name = "0";
 			}
-			sql = "SELECT last_name from workorders where work_order_number=" + wonum + ";";
+			sql = "SELECT last_name FROM workorders WHERE work_order_number=" + wonum + ";";
 			pstmt = connection.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 		
@@ -2187,7 +2187,7 @@ class Operations extends Thread
 				name = "0";
 			}
 			
-			sql = "SELECT config from email where property='mail.from';";
+			sql = "SELECT config FROM email WHERE property='mail.from';";
 			pstmt = connection.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 		
@@ -2200,7 +2200,7 @@ class Operations extends Thread
 				name = "0";
 			}
 			
-			sql = "SELECT config from email where property='mail.host';";
+			sql = "SELECT config FROM email WHERE property='mail.host';";
 			pstmt = connection.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 		
@@ -2213,7 +2213,7 @@ class Operations extends Thread
 				name = "0";
 			}
 			
-			sql = "SELECT config from email where property='subject';";
+			sql = "SELECT config FROM email WHERE property='subject';";
 			pstmt = connection.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 		
@@ -2388,7 +2388,7 @@ class Operations extends Thread
 				if(Integer.parseInt(s) == 1) // the user is active
 				{
 					//gets the userlevel from the database
-					sql = "SELECT USER_LEVEL FROM users WHERE USER_NAME = '" + uname + "';";
+					sql = "SELECT user_level FROM users WHERE user_name = '" + uname + "';";
 					pstmt = connection.prepareStatement(sql);
 					rs = pstmt.executeQuery();
 					s = "";
@@ -2410,7 +2410,7 @@ class Operations extends Thread
 					String logon_time =  timeobject.GetCurrentYear_asInt() + "-" + timeobject.GetCurrentMonth_asInt() + "-" + timeobject.GetCurrentDay_asInt()+ "-" + timeobject.GetMilitaryTime_asString();
 								
 					
-					sql = "UPDATE users SET LAST_LOGIN ='"+ logon_time + "' WHERE user_name = '" + uname + "';";
+					sql = "UPDATE users SET last_login ='"+ logon_time + "' WHERE user_name = '" + uname + "';";
 					pstmt = connection.prepareStatement(sql);
 					pstmt.executeUpdate(); 
 				}
@@ -2814,7 +2814,7 @@ class Operations extends Thread
 	        PreparedStatement pstmt;
 	        
 	        //creates the table if it does not exist.
-			sql = "CREATE TABLE IF NOT EXISTS users(USER_ID INTEGER NOT NULL PRIMARY KEY, USER_NAME VARCHAR(30) NOT NULL, PASSWORD VARCHAR(80) NOT NULL, campus VARCHAR(30) NOT NULL, USER_LEVEL INTEGER NOT NULL,last_logon VARCHAR(20),active INTEGER NOT NULL,bgcolor VARCHAR(20),txtcolor VARCHAR(20));";
+			sql = "CREATE TABLE IF NOT EXISTS users(user_id INTEGER NOT NULL PRIMARY KEY, user_name VARCHAR(30) NOT NULL, password VARCHAR(80) NOT NULL, campus VARCHAR(30) NOT NULL, user_level INTEGER NOT NULL,last_logon VARCHAR(20),active INTEGER NOT NULL,bgcolor VARCHAR(20),txtcolor VARCHAR(20));";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.executeUpdate();
 	        //----------------------------------------------------------
@@ -2830,7 +2830,7 @@ class Operations extends Thread
 			if(count  == 0)
 			{
 				//there are no users in the database.
-				sql = "INSERT INTO users (USER_ID, USER_NAME,PASSWORD,CAMPUS,USER_LEVEL,active) VALUES (0,'administrator','!#/ zW¥§C‰JJ€Ã','Computer Technology',0,1 );";
+				sql = "INSERT INTO users (user_id, user_name,password,campus,user_level,active) VALUES (0,'administrator','!#/ zW¥§C‰JJ€Ã','Information Technology ',0,1 );";
 				pstmt = connection.prepareStatement(sql);
 				pstmt.executeUpdate();
 			}
@@ -2872,7 +2872,7 @@ class Operations extends Thread
 	        PreparedStatement pstmt;
 	        
 	        //creates the table if it does not exist.
-			sql = "CREATE TABLE IF NOT EXISTS sites(site_id INTEGER PRIMARY KEY NOT NULL,site_name VARCHAR(50) NOT NULL,phone VARCHAR(20),VLAN INTEGER NOT NULL);";
+			sql = "CREATE TABLE IF NOT EXISTS sites(site_id INTEGER PRIMARY KEY NOT NULL,site_name VARCHAR(50) NOT NULL,phone VARCHAR(20),vlan INTEGER NOT NULL);";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.executeUpdate();
 	        //----------------------------------------------------------

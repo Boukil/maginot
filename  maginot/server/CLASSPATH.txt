@@ -1,5 +1,0 @@
-You must set the environment variable class path in windows to the java driver for mysql. If you do not do this, the program will not be able to talk to SQL
-
-
-//an example
-.;C:\Maginot Server\javamail-1.4.1\mail.jar;C:\Maginot Server\mysql-connector-java-5.1.2-beta\mysql-connector-java-5.1.2-beta-bin;
