@@ -121,43 +121,8 @@ public class MainGui extends JFrame implements ActionListener
 	
 	public void authenticate()
 	{
-		boolean domainname = false;
-		
-		String username = System.getProperty("user.name");
-		for(int c = 0; c < username.length(); c++)
-		{
-			String ip = s.getInetAddress().toString();
-			
-			if((username.charAt(c) == '.') && (c > 1) && (c < username.length()) && (Integer.parseInt(ip.substring(1,ip.indexOf("."))) == 10))
-			{
-				domainname = true;
-				messagets.putMessage("026:" + username);
-				try
-				{
-					userlevel = Integer.parseInt(messagefs.getMessage().toString());	
-				}
-				catch(Exception e)
-				{
-					userlevel = 2;
-				}
-				boolean goodversion = authenticateVersion();
-				if(goodversion)
-				{
-					gui();
-				}
-				else
-				{
-					JOptionPane.showMessageDialog(null,"This version of the Maginot Software is out of date. \n Please obtain a new copy." );
-					System.exit(0);
-				}
-			}
-		}
-			
-		if(domainname == false)
-		{
-			System.out.println("drawing GUI");
 			setSize(250, 150);
-		//	setResizable(false);
+			setResizable(false);
 			setTitle("Work Order Login");
 			contentPane = getContentPane( );
 			contentPane.setLayout(new BorderLayout( ));
@@ -211,7 +176,6 @@ public class MainGui extends JFrame implements ActionListener
 			loginbutton.addActionListener(this);
 			buttonflow.add(loginbutton);
 			this.setVisible(true);
-		}
 	}
 	
 	public boolean authenticateVersion()
@@ -704,7 +668,7 @@ public class MainGui extends JFrame implements ActionListener
 		//======================================================================
 		//a login request.
 		if(((actionCommand.equals("Login")) || (usernamefield == e.getSource()) || (passwordfield == e.getSource())) && (!usernamefield.getText().equals("")) && (!passwordfield.getText().equals("")))
-		{
+		
 			username = usernamefield.getText();
 			Encryption f = new Encryption();
 			f.setPassword(passwordfield.getText());
@@ -730,7 +694,7 @@ public class MainGui extends JFrame implements ActionListener
 				
 				if(goodversion)
 				{
-					if(passwordfield.getText().equalsIgnoreCase("ecisd"))
+					if(passwordfield.getText().equalsIgnoreCase("password"))
 					{
 						JOptionPane.showMessageDialog(null, "You have a default password. \n You will now be prompted to change your password. \n You must change it before you can continue");
 						contentPane.remove(panel);
