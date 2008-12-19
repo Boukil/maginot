@@ -1,0 +1,7 @@
+You must set the environment variable class path in windows to the java driver.
+
+
+//an example
+.;C:\Documents and Settings\larizzas\Desktop\mysql-connector-java-5.1.2-beta\mysql-connector-java-5.1.2-beta\mysql-connector-java-5.1.2-beta-bin.jar
+
+.;C:\javamail-1.4.1\mail.jar;C:\mysql-connector-java-5.1.2-beta\mysql-connector-java-5.1.2-beta-bin;
