@@ -6,7 +6,7 @@
 		<root_path>\</root_path>
 		<output_path>\</output_path>
 		<source_path>\</source_path>
-		<jdkprofile_ref>JDK version 1.6.0_06</jdkprofile_ref>
+		<jdkprofile_ref>JDK version 1.6.0_11</jdkprofile_ref>
 		<compiler_ref>&lt;Default&gt;</compiler_ref>
 		<ant_ref/>
 	</settings>
@@ -27,7 +27,6 @@
 	</runtimes>
 	<libraries>
 		<library_ref>mail</library_ref>
-		<library_ref>sql</library_ref>
 	</libraries>
 	<files>
 		<include>
