@@ -1,0 +1,5 @@
+"C:\\Documents and Settings\\larizzas\\Desktop\\magic\\server\\Instruction.java"
+"C:\\Documents and Settings\\larizzas\\Desktop\\magic\\server\\SavitchIn.java"
+"C:\\Documents and Settings\\larizzas\\Desktop\\magic\\server\\TCPServer.java"
+"C:\\Documents and Settings\\larizzas\\Desktop\\magic\\server\\time.java"
+"C:\\Documents and Settings\\larizzas\\Desktop\\magic\\server\\Transfer.java"
