@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<workspace>
+	<settings>
+		<label>Maginot Client</label>
+	</settings>
+	<users>
+		<user>
+			<path>Maginot Client.jcu</path>
+		</user>
+	</users>
+	<projects>
+		<project>
+			<path>Maginot Client.jcp</path>
+		</project>
+	</projects>
+</workspace>
