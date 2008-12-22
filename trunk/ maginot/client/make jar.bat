@@ -1,4 +1,4 @@
-path="C:\Program Files\Java\jdk1.6.0_06\bin"
+path="C:\Program Files (x86)\Java\jdk1.6.0_11\bin"
 del *.class
 javac *.java
 jar cmf mainClass.txt "Maginot Client.jar" *.class
