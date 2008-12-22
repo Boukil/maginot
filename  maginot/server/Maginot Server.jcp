@@ -27,6 +27,7 @@
 	</runtimes>
 	<libraries>
 		<library_ref>mail</library_ref>
+		<library_ref>sql</library_ref>
 	</libraries>
 	<files>
 		<include>
