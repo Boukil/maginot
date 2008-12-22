@@ -254,7 +254,7 @@ class Operations extends Thread
 			        String mydatabase = "Maginot";
 			        
 			        String url = "jdbc:mysql://" + serverName +  "/" + mydatabase; // a JDBC url
-			        String username = "java"; //SQL username
+			        String username = "maginot"; //SQL username
 			        String password = "dell001"; //SQL password for the above username.
 			        connection = DriverManager.getConnection(url, username, password);
 			        Statement stmt = connection.createStatement();
@@ -2023,7 +2023,7 @@ class Operations extends Thread
 							messagetco.putMessage(color);
 						break;
 						//15x will be used for database cleanup
-						case 150:
+					/*	case 150:
 							sql = "SELECT * FROM workorders where status=1;";	
 							pstmt = connection.prepareStatement(sql);
 							rs = pstmt.executeQuery();		
@@ -2053,7 +2053,7 @@ class Operations extends Thread
 									//field type can't be null... in this and the above catch... whatever.
 								}
 							}
-						break;
+						break;*/
 					}
 					connection.close();
 			    } 
@@ -2106,7 +2106,7 @@ class Operations extends Thread
 			String mydatabase = "Maginot";
 			
 			String url = "jdbc:mysql://" + serverName +  "/" + mydatabase; // a JDBC url
-			String username = "java"; //SQL username
+			String username = "maginot"; //SQL username
 			String password = "dell001"; //SQL password for the above username.
 			connection = DriverManager.getConnection(url, username, password);
 			Statement stmt = connection.createStatement();
@@ -2336,7 +2336,7 @@ class Operations extends Thread
 			String mydatabase = "Maginot";
 			
 			String url = "jdbc:mysql://" + serverName +  "/" + mydatabase; // a JDBC url
-			String username = "java"; //SQL username
+			String username = "maginot"; //SQL username
 			String password = "dell001"; //SQL password for the above username.
 			connection = DriverManager.getConnection(url, username, password);
 			Statement stmt = connection.createStatement();
@@ -2455,7 +2455,7 @@ class Operations extends Thread
 	        String mydatabase = "Maginot";
 	        
 	        String url = "jdbc:mysql://" + serverName +  "/" + mydatabase; // a JDBC url
-	        String username = "java"; //SQL username
+	        String username = "maginot"; //SQL username
 	        String password = "dell001"; //SQL password for the above username.
 	        connection = DriverManager.getConnection(url, username, password);
 	        Statement stmt = connection.createStatement();
@@ -2544,7 +2544,7 @@ class Operations extends Thread
 	        String mydatabase = "Maginot";
 	        
 	        String url = "jdbc:mysql://" + serverName +  "/" + mydatabase; // a JDBC url
-	        String username = "java"; //SQL username
+	        String username = "maginot"; //SQL username
 	        String password = "dell001"; //SQL password for the above username.
 	        connection = DriverManager.getConnection(url, username, password);
 	        Statement stmt = connection.createStatement();
@@ -2633,7 +2633,7 @@ class Operations extends Thread
 	        String mydatabase = "Maginot";
 	        
 	        String url = "jdbc:mysql://" + serverName +  "/" + mydatabase; // a JDBC url
-	        String username = "java"; //SQL username
+	        String username = "maginot"; //SQL username
 	        String password = "dell001"; //SQL password for the above username.
 	        connection = DriverManager.getConnection(url, username, password);
 	        Statement stmt = connection.createStatement();
@@ -2771,7 +2771,7 @@ class Operations extends Thread
 	        String mydatabase = "mysql";
 	        
 	        String url = "jdbc:mysql://" + serverName +  "/" + mydatabase; // a JDBC url
-	        String username = "java"; //SQL username
+	        String username = "maginot"; //SQL username
 	        String password = "dell001"; //SQL password for the above username.
 	        connection = DriverManager.getConnection(url, username, password);
 	        Statement stmt = connection.createStatement();
@@ -2807,14 +2807,14 @@ class Operations extends Thread
 	        String mydatabase = "Maginot";
 	        
 	        String url = "jdbc:mysql://" + serverName +  "/" + mydatabase; // a JDBC url
-	        String username = "java"; //SQL username
+	        String username = "maginot"; //SQL username
 	        String password = "dell001"; //SQL password for the above username.
 	        connection = DriverManager.getConnection(url, username, password);
 	        Statement stmt = connection.createStatement();
 	        PreparedStatement pstmt;
 	        
 	        //creates the table if it does not exist.
-			sql = "CREATE TABLE IF NOT EXISTS users(user_id INTEGER NOT NULL PRIMARY KEY, user_name VARCHAR(30) NOT NULL, password VARCHAR(80) NOT NULL, campus VARCHAR(30) NOT NULL, user_level INTEGER NOT NULL,last_logon VARCHAR(20),active INTEGER NOT NULL,bgcolor VARCHAR(20),txtcolor VARCHAR(20));";
+			sql = "CREATE TABLE IF NOT EXISTS users(user_id INTEGER NOT NULL PRIMARY KEY, user_name VARCHAR(30) NOT NULL, password VARCHAR(80) NOT NULL, campus VARCHAR(30) NOT NULL, user_level INTEGER NOT NULL,last_login VARCHAR(20),active INTEGER NOT NULL,bgcolor VARCHAR(20),txtcolor VARCHAR(20));";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.executeUpdate();
 	        //----------------------------------------------------------
@@ -2865,7 +2865,7 @@ class Operations extends Thread
 	        String mydatabase = "Maginot";
 	        
 	        String url = "jdbc:mysql://" + serverName +  "/" + mydatabase; // a JDBC url
-	        String username = "java"; //SQL username
+	        String username = "maginot"; //SQL username
 	        String password = "dell001"; //SQL password for the above username.
 	        connection = DriverManager.getConnection(url, username, password);
 	        Statement stmt = connection.createStatement();
@@ -2922,7 +2922,7 @@ class Operations extends Thread
 	        String mydatabase = "Maginot";
 	        
 	        String url = "jdbc:mysql://" + serverName +  "/" + mydatabase; // a JDBC url
-	        String username = "java"; //SQL username
+	        String username = "maginot"; //SQL username
 	        String password = "dell001"; //SQL password for the above username.
 	        connection = DriverManager.getConnection(url, username, password);
 	        Statement stmt = connection.createStatement();
@@ -3068,7 +3068,7 @@ class Operations extends Thread
 	        String mydatabase = "Maginot";
 	        
 	        String url = "jdbc:mysql://" + serverName +  "/" + mydatabase; // a JDBC url
-	        String username = "java"; //SQL username
+	        String username = "maginot"; //SQL username
 	        String password = "dell001"; //SQL password for the above username.
 	        connection = DriverManager.getConnection(url, username, password);
 	        Statement stmt = connection.createStatement();

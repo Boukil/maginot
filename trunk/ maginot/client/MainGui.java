@@ -80,7 +80,7 @@ public class MainGui extends JFrame implements ActionListener
 			int serverPort = 3000;
 			
 			//s = new Socket("NOC-MAG01.ectorcountyisd.org",serverPort);
-			s = new Socket ("10.100.1.49",serverPort);
+			s = new Socket ("127.0.0.1",serverPort);
 			//s = new Socket("10.100.2.34",serverPort);
 			
 			ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
@@ -668,7 +668,7 @@ public class MainGui extends JFrame implements ActionListener
 		//======================================================================
 		//a login request.
 		if(((actionCommand.equals("Login")) || (usernamefield == e.getSource()) || (passwordfield == e.getSource())) && (!usernamefield.getText().equals("")) && (!passwordfield.getText().equals("")))
-		
+		{
 			username = usernamefield.getText();
 			Encryption f = new Encryption();
 			f.setPassword(passwordfield.getText());
@@ -694,7 +694,7 @@ public class MainGui extends JFrame implements ActionListener
 				
 				if(goodversion)
 				{
-					if(passwordfield.getText().equalsIgnoreCase("password"))
+					if(passwordfield.getText().equalsIgnoreCase("ecisd"))
 					{
 						JOptionPane.showMessageDialog(null, "You have a default password. \n You will now be prompted to change your password. \n You must change it before you can continue");
 						contentPane.remove(panel);
