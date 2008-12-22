@@ -10,11 +10,11 @@
 			<showfiles>false</showfiles>
 			<fileitem>
 				<path>MainGui.java</path>
-				<collapsedfolds>0;0;188</collapsedfolds>
+				<collapsedfolds>0;0;0;0;153;137;77</collapsedfolds>
 			</fileitem>
 			<fileitem>
 				<path>WODetails.java</path>
-				<collapsedfolds>1190</collapsedfolds>
+				<collapsedfolds>0;1194</collapsedfolds>
 			</fileitem>
 		</project>
 	</projects>
@@ -26,7 +26,7 @@
 			<active>false</active>
 		</docitem>
 		<docitem>
-			<path>AboutDialog.java</path>
+			<path>WODetails.java</path>
 			<source>true</source>
 			<index>1</index>
 			<active>true</active>

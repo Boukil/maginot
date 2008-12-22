@@ -20,8 +20,7 @@ public class MainGui extends JFrame implements ActionListener
 	Container contentPane;
 	
 	//stuff for the first window
-	private JPanel north_panel_south, north_panel,panel,panel1,panel2,panel3,panel5,south_panel5,
-						flow_panel1,flow_panel2,flow_panel3;
+	private JPanel north_panel_south, north_panel,panel,panel1,panel2,panel3,panel5,south_panel5,flow_panel1,flow_panel2,flow_panel3;
 	
     private TextField usernamefield;
     private String username;
@@ -67,9 +66,14 @@ public class MainGui extends JFrame implements ActionListener
 	public MainGui()
 	{
     	//-------------------------------------------------------
+    	if(new File("server.cfg").exists() == false)
+		{
+			getServerConfiguration();
+		}
 		establistConnection();
 		authenticate(); //go authenticate to the server first.
-		//if the user can authenticate, the rest of the GUI is drawn.
+			//if the user can authenticate, the rest of the GUI is drawn.
+		
 	}
 	public void establistConnection()
 	{
@@ -78,10 +82,23 @@ public class MainGui extends JFrame implements ActionListener
 		try
 		{
 			int serverPort = 3000;
-			
-			//s = new Socket("NOC-MAG01.ectorcountyisd.org",serverPort);
-			s = new Socket ("127.0.0.1",serverPort);
-			//s = new Socket("10.100.2.34",serverPort);
+			String server = "127.0.0.1";
+			try
+    		{
+	    		BufferedReader inputStream = new BufferedReader(new FileReader("server.cfg"));
+	    		server = inputStream.readLine();
+	    		inputStream.close();
+    		}
+    	
+	    	catch(FileNotFoundException e)
+	    	{
+	    		JOptionPane.showMessageDialog(null, "The server config file was not found! \n Make sure this is a writable directory.", "Error", JOptionPane.ERROR_MESSAGE);
+	    	}
+	    	catch(IOException e)
+	    	{
+	    		JOptionPane.showMessageDialog(null, "The server config file was not found! \n Make sure this is a writable directory.", "Error", JOptionPane.ERROR_MESSAGE);
+	    	} 
+			s = new Socket (server,serverPort);
 			
 			ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
 			ObjectInputStream in = new ObjectInputStream(s.getInputStream());
@@ -116,6 +133,21 @@ public class MainGui extends JFrame implements ActionListener
 		finally
 		{
 			
+		}
+	}
+	public void getServerConfiguration()
+	{
+		String server = JOptionPane.showInputDialog(null,"Please enter the domain (DNS) name  or IP address of your Maginot Server");
+		try
+		{
+			PrintWriter outputStream = new PrintWriter(new FileOutputStream("server.cfg"));
+			outputStream.print(server);
+			outputStream.close();
+		}
+		catch(FileNotFoundException e)
+		{
+			// we don't need anything here because we will never get a file not found
+			// because the file is created in the try block. 
 		}
 	}
 	
@@ -191,7 +223,7 @@ public class MainGui extends JFrame implements ActionListener
 		getColors();
 		setSize(760,695);
 		setResizable(true);
-		setTitle("Maginot Client v2.9.6");
+		setTitle("Maginot Client v3.0.0");
 		contentPane = getContentPane( );
         contentPane.setLayout(new BorderLayout( ));
         JFrame myWindow = new JFrame();
@@ -592,11 +624,6 @@ public class MainGui extends JFrame implements ActionListener
 			
 			JMenu databasemenu = new JMenu("Database");
 			
-			JMenuItem databasecleanup = new JMenuItem("Cleanup Database...");
-			databasecleanup.addActionListener(this);
-			databasemenu.add(databasecleanup);
-			databasemenu.addSeparator();
-			
 			JMenuItem databasebackup = new JMenuItem("Backup Database...");
 			databasebackup.addActionListener(this);
 			databasemenu.add(databasebackup);
@@ -694,7 +721,7 @@ public class MainGui extends JFrame implements ActionListener
 				
 				if(goodversion)
 				{
-					if(passwordfield.getText().equalsIgnoreCase("ecisd"))
+					if(passwordfield.getText().equalsIgnoreCase("password"))
 					{
 						JOptionPane.showMessageDialog(null, "You have a default password. \n You will now be prompted to change your password. \n You must change it before you can continue");
 						contentPane.remove(panel);
@@ -713,7 +740,7 @@ public class MainGui extends JFrame implements ActionListener
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null,"This version of the Maginot Software is out of date. \n Please obtain a new copy." );
+					JOptionPane.showMessageDialog(null,"This version of the Maginot Client is not compatible with this server. \n Please obtain a new copy." );
 					System.exit(0);
 				}
 			}
@@ -738,25 +765,32 @@ public class MainGui extends JFrame implements ActionListener
 				temp_number = JOptionPane.showInputDialog(null,"Enter the Work Order Number").trim();
 				
 				if((temp_number != null))
-				{
-					int number = Integer.parseInt(temp_number);
-					WODetails object = new WODetails(messagets,messagefs,userlevel,number,4);
+				{	
+					boolean goodnumber = true;
+					int number = 0;
+					try
+					{
+						number = Integer.parseInt(temp_number);
+					}
+					catch(Exception g)
+					{
+						JOptionPane.showMessageDialog(null,"That is not a number. Please enter only numbers \n" + g);
+						goodnumber = false;
+					}
+					if(goodnumber)
+					{
+						WODetails object = new WODetails(messagets,messagefs,userlevel,number,4);
+					}	
 				}
 			}
 			catch(Exception f)
 			{
-				if(temp_number.length() > 0)
-					JOptionPane.showMessageDialog(null,"You must enter only numbers here." + f);
+					JOptionPane.showMessageDialog(null,"An exception has occurred. Maybe something is wrong with the database details? \n" + f);
 			}
 		}
 		if(actionCommand.equals("Backup Database..."))
 		{
 			BackupDatabase backup = new BackupDatabase(messagets,messagefs);
-		}
-		if(actionCommand.equals("Cleanup Database..."))
-		{
-			messagets.putMessage("150:");
-			JOptionPane.showMessageDialog(null,"Database cleanup Started");
 		}
 		if(actionCommand.equals("Show All Open W/Os"))
 		{
@@ -802,11 +836,6 @@ public class MainGui extends JFrame implements ActionListener
 		if(actionCommand.equals("My Status"))
 		{
 			MyStatus status = new MyStatus(messagets,messagefs);
-		}
-		if(actionCommand.equals("Run Database Cleanup"))
-		{
-			messagets.putMessage("080:");
-			JOptionPane.showMessageDialog(null,"Database cleanup launched. \n This utility will run in the background on the server.");
 		}
 		if(actionCommand.equals("Email Manager"))
 		{
