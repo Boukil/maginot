@@ -8,25 +8,17 @@
 		<project>
 			<label>Maginot Client</label>
 			<showfiles>false</showfiles>
-			<fileitem>
-				<path>MainGui.java</path>
-				<collapsedfolds>0;0;0;0;153;137;77</collapsedfolds>
-			</fileitem>
-			<fileitem>
-				<path>WODetails.java</path>
-				<collapsedfolds>0;1194</collapsedfolds>
-			</fileitem>
 		</project>
 	</projects>
 	<open_files>
 		<docitem>
-			<path>MainGui.java</path>
+			<path>AboutDialog.java</path>
 			<source>true</source>
 			<index>0</index>
 			<active>false</active>
 		</docitem>
 		<docitem>
-			<path>WODetails.java</path>
+			<path>MainGui.java</path>
 			<source>true</source>
 			<index>1</index>
 			<active>true</active>
