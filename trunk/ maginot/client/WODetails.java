@@ -115,425 +115,429 @@ public class WODetails extends JFrame implements ActionListener
     	messagets.putMessage("130:" + workordernumber);
     	message = messagefs.getMessage().toString();
     	
-    	String priorityoptions[] = {"1","2","3"};
-        prioritybox = new JComboBox(priorityoptions);
-        
-        if(!message.equalsIgnoreCase("null"))
-        	prioritybox.setSelectedIndex(Integer.parseInt(message)-1);	
-        else
-        	prioritybox.setSelectedIndex(-1);
-        	
-        JLabel priorityboxlabel = new JLabel("Priority:    ");
-        priorityboxlabel.setForeground(txtColor);
-        flows[2].add(priorityboxlabel);
-        flows[2].add(prioritybox);
-        
-        if(userlevel > 0)
-        {
-        	prioritybox.setEnabled(false);
-        }
-        
-        
-        roomnum = new JTextField(20);
-        JLabel roomnumlabel = new JLabel("Room Number:");
-        roomnumlabel.setForeground(txtColor);
-        flows[3].add(roomnumlabel);
-        flows[3].add(roomnum);
-        
-        campusbox = new JComboBox(campusoptions);
-        JLabel campusboxlabel = new JLabel("Campus:");
-        campusboxlabel.setForeground(txtColor);
-        flows[4].add(campusboxlabel);
-        flows[4].add(campusbox);
-        
-        phonefield = new JTextField(20);
-        JLabel phonelabel = new JLabel("Phone Number:");
-        phonelabel.setForeground(txtColor);
-        flows[5].add(phonelabel);
-        flows[5].add(phonefield);
-        
-        ecisdnum = new JTextField(20);
-        JLabel ecisdlabel = new JLabel("ECISD number");
-        ecisdlabel.setForeground(txtColor);
-        flows[6].add(ecisdlabel);
-        flows[6].add(ecisdnum);
-        
-        model = new JTextField(20); 
-        JLabel modellabel = new JLabel("Model:                ");
-        modellabel.setForeground(txtColor);
-        flows[7].add(modellabel);
-        flows[7].add(model);
-        
-        openedbyfield = new JTextField(20);
-        openedbyfield.setEditable(false);
-        JLabel openedbylabel = new JLabel("Opened by:");
-        openedbylabel.setForeground(txtColor);
-        flows[8].add(openedbylabel);
-        flows[8].add(openedbyfield);
-        
-        closedbyfield = new JTextField(20);
-        closedbyfield.setEditable(false);
-        JLabel closedbylabel = new JLabel("Closed by:");
-        closedbylabel.setForeground(txtColor);
-        flows[9].add(closedbylabel);
-        flows[9].add(closedbyfield);
-        
-        dateopenedfield = new JTextField(20);
-        dateopenedfield.setEditable(false);
-        JLabel dateopenedlabel = new JLabel("Date Opened:");
-        dateopenedlabel.setForeground(txtColor);
-        flows[10].add(dateopenedlabel);
-        flows[10].add(dateopenedfield);
-        
-        dateclosedfield = new JTextField(20);
-        dateclosedfield.setEditable(false);
-        JLabel dateclosedlabel = new JLabel("Date Closed:");
-        dateclosedlabel.setForeground(txtColor);
-        flows[11].add(dateclosedlabel);
-        flows[11].add(dateclosedfield);
-        
-        servicetagfield = new JTextField(20);
-        JLabel servicetaglabel = new JLabel("Service Tag:");
-        servicetaglabel.setForeground(txtColor);
-        flows[12].add(servicetaglabel);
-        flows[12].add(servicetagfield);
-        
-        JTextField ttcfield = new JTextField(20);
-        ttcfield.setEditable(false);
-        JLabel ttclabel = new JLabel("Time to Completion");
-        ttclabel.setForeground(txtColor);
-        flows[13].add(ttclabel);
-        flows[13].add(ttcfield);
-        //gets the TTC only if the status is pending closed or closed.
-        if((statusnum == 1) || (statusnum == 4))
-        {
-        	message = "110:" + workordernumber;
-        	messagets.putMessage(message);
-        	message = messagefs.getMessage().toString();
-        	if(!message.equalsIgnoreCase("null"))
-       			ttcfield.setText(message);
-        }
-        //get a list of techs from the server
-        message = "025:";
-        messagets.putMessage(message);
-        String assignedtooptions[] = messagefs.getMessage().toString().split(",");
-        Arrays.sort(assignedtooptions);
-        
-        assignedtobox = new JComboBox(assignedtooptions);
-
-        JLabel assignedtolabel = new JLabel("Assigned To:");
-        assignedtolabel.setForeground(txtColor);
-        
-        flows[14].add(assignedtolabel);
-        flows[14].add(assignedtobox);
-        
-        JPanel center_panel5 = new JPanel();
-        center_panel5.setBackground(bgColor);
-        center_panel5.setLayout(new BorderLayout());
-        panel5.add(center_panel5,BorderLayout.CENTER);
-        
-        
-        //---------------------------------------------------------
-        //the panels to set up the west JTextArea properly
-        
-        JPanel west_center_panel5 = new JPanel();
-        west_center_panel5.setBackground(bgColor);
-        west_center_panel5.setLayout(new BorderLayout());
-        panel5.add(west_center_panel5,BorderLayout.WEST);
-        
-        JPanel flowdescriptionlabel = new JPanel();
-        flowdescriptionlabel.setBackground(bgColor);
-        flowdescriptionlabel.setLayout(new FlowLayout());
-        west_center_panel5.add(flowdescriptionlabel,BorderLayout.NORTH);
-        
-        JLabel problemdeslabel = new JLabel("Problem description:");
-        problemdeslabel.setForeground(txtColor);
-        flowdescriptionlabel.add(problemdeslabel);
-        
-        JPanel flowproblemdes = new JPanel();
-        flowproblemdes.setBackground(bgColor);
-        flowproblemdes.setLayout(new GridLayout(2,1));
-        west_center_panel5.add(flowproblemdes,BorderLayout.CENTER);
-        
-        JLabel blanklabel = new JLabel("                  ");
-        blanklabel.setForeground(txtColor);
-        west_center_panel5.add(blanklabel,BorderLayout.WEST);
-        
-        problemdes = new JTextArea(10,25);
-        problemdes.setEditable(false);
-        problemdes.setLineWrap(true);
-        problemdes.setWrapStyleWord(true);
-        JScrollPane scrolledtext = new JScrollPane(problemdes);
-        flowproblemdes.add(scrolledtext);
-        
-        problemadddes = new JTextArea(10,25);
-        problemadddes.setLineWrap(true);
-        problemadddes.setWrapStyleWord(true);
-        JScrollPane scrolledtext4 = new JScrollPane(problemadddes);
-        flowproblemdes.add(scrolledtext4);
-        
-        
-        //--------------------------------------------------------------------
-        //same as above, but the the JTextArea east
-        JPanel east_center_panel5 = new JPanel();
-        east_center_panel5.setBackground(bgColor);
-        east_center_panel5.setLayout(new BorderLayout());
-        panel5.add(east_center_panel5,BorderLayout.EAST);
-        
-        JPanel flowresolutionlabel = new JPanel();
-        flowresolutionlabel.setBackground(bgColor);
-        flowresolutionlabel.setLayout(new FlowLayout());
-        east_center_panel5.add(flowresolutionlabel,BorderLayout.NORTH);
-        
-        JLabel resolutionlabel = new JLabel("Problem resolution:                  ");
-        resolutionlabel.setForeground(txtColor);
-        flowresolutionlabel.add(resolutionlabel);
-        
-        JPanel flowproblemres = new JPanel();
-        flowproblemres.setBackground(bgColor);
-        flowproblemres.setLayout(new GridLayout(2,1));
-        east_center_panel5.add(flowproblemres,BorderLayout.CENTER);
-        
-        JLabel blanklabel2 = new JLabel("                     ");
-        blanklabel2.setForeground(txtColor);
-        east_center_panel5.add(blanklabel2,BorderLayout.EAST);
-        
-        problemres = new JTextArea(10,25);
-        problemres.setEditable(false);
-        problemres.setLineWrap(true);
-        problemres.setWrapStyleWord(true);
-        JScrollPane scrolledtext2 = new JScrollPane(problemres);
-        flowproblemres.add(scrolledtext2);
-        
-        problemaddres = new JTextArea(10,25);
-        problemaddres.setLineWrap(true);
-        problemaddres.setWrapStyleWord(true);
-        JScrollPane scrolledtext3 = new JScrollPane(problemaddres);
-        flowproblemres.add(scrolledtext3);
-        
-        
-        
-        south_panel5 = new JPanel();
-        south_panel5.setBackground(bgColor);
-        south_panel5.setLayout(new BorderLayout());
-        panel5.add(south_panel5,BorderLayout.SOUTH);
-        
-        JPanel button_south_panel5 = new JPanel();
-        button_south_panel5.setBackground(bgColor);
-        button_south_panel5.setLayout(new FlowLayout());
-        south_panel5.add(button_south_panel5,BorderLayout.NORTH);
-        
-        
-        
-        //the only thing that varies between the pending open and the pending close
-        //is what buttons are on the GUI, and what they do.
-        
-        if(statusnum == 0) //pending open
-        {
-        	JButton markopenbutton = new JButton("Open for Technicians");
-        	markopenbutton.setForeground(txtColor);
-        	button_south_panel5.add(markopenbutton);
-        	markopenbutton.addActionListener(this);
-        	
-        	JButton closebutton = new JButton("Close");
-        	closebutton.setForeground(txtColor);
-	    	closebutton.addActionListener(this);
-	    	button_south_panel5.add(closebutton);
-        }
-        else if(statusnum == 1) // pending close
-        {
-        	JButton openWObuttontech = new JButton("Open for Technicians");
-        	openWObuttontech.setForeground(txtColor);
-	        button_south_panel5.add(openWObuttontech);
-	        openWObuttontech.addActionListener(this);
+    	if(message.equalsIgnoreCase("NoSuchWorkorder"))
+    	{
+    		JOptionPane.showMessageDialog(null,"That workorder number does not exist");
+    	}
+    	else
+    	{	
+	    	String priorityoptions[] = {"1","2","3"};
+	        prioritybox = new JComboBox(priorityoptions);
 	        
-	        JButton savebutton = new JButton("Save");
-	    	savebutton.setForeground(txtColor);
-	    	savebutton.addActionListener(this);
-	    	button_south_panel5.add(savebutton);
-	        
-	    	JButton closebutton = new JButton("Close");
-	    	closebutton.setForeground(txtColor);
-	    	closebutton.addActionListener(this);
-	    	button_south_panel5.add(closebutton);
-	    	//adds the checkbox and the date field that the email was sent.
-	    	
-	    	cb = new JCheckBoxMenuItem("Email Sent");
-	    	cb.setBackground(bgColor);
-	    	cb.setForeground(txtColor);
-	    	cb.addActionListener(this);
-	    	flows[16].add(cb);
-	    	
-	    	messagets.putMessage("094:" +workordernumber);
-	    	String data = messagefs.getMessage().toString();
-	    	
-	    	if(data.equalsIgnoreCase("1"))
-	    	{
-	    		cb.setState(true);
-	    	}
-	    	JLabel emailsendfieldlabel = new JLabel("Date Email Sent");
-	    	emailsendfieldlabel.setForeground(txtColor);
-	    	dateemailsent = new JTextField(20);
-	    	dateemailsent.setEditable(false);
-	    	flows[17].add(emailsendfieldlabel);
-	    	flows[17].add(dateemailsent);
-	    	
-	    	if(cb.getState() == true)
-	    	{
-	    		messagets.putMessage("091:" + workordernumber);
-	    		data = messagefs.getMessage().toString();
-	    		dateemailsent.setText(data);
-	    	}
-        }
-        else if(statusnum == 3) // work order is open on the Technician's screen
-        {
-        	JButton closebutton = new JButton("Close");
-        	closebutton.setForeground(txtColor);
-	    	closebutton.addActionListener(this);
-	    	button_south_panel5.add(closebutton);
-	    	
-	    	JButton savebutton = new JButton("Save");
-	    	savebutton.setForeground(txtColor);
-	    	savebutton.addActionListener(this);
-	    	button_south_panel5.add(savebutton);
-        }
-		else if(statusnum == 4)
-		{
-			//set them all editable to false;
-			fnamefield.setEditable(false);
-			lnamefield.setEditable(false);
-			wonum.setEditable(false);
-			roomnum.setEditable(false);
-			phonefield.setEditable(false);
-			ecisdnum.setEditable(false);
-			model.setEditable(false);
-			openedbyfield.setEditable(false);
-			closedbyfield.setEditable(false);
-			dateopenedfield.setEditable(false);
-			dateclosedfield.setEditable(false);
-			servicetagfield.setEditable(false);      
-			problemdes.setEditable(false);
-			problemres.setEditable(false);
-		}       
-        // populates the fields with info from the server.
-        
-        message = "011:" + workordernumber;
-        messagets.putMessage(message);
-        String data = messagefs.getMessage().toString();
-        System.out.println(data);
-        StringTokenizer tokenizer = new StringTokenizer(data,",");
-        
-        
-        wonum.setText(tokenizer.nextToken());
-       	 	if(wonum.getText().equals("null"))
-       	 		wonum.setText("");
-       	 	else
-       	 		setTitle("Maginot Client - WO# " + wonum.getText());
-       	 		
-        ecisdnum.setText(tokenizer.nextToken());
-	        if(ecisdnum.getText().equals("-1"))
-	        	ecisdnum.setText("");
-	        else if(ecisdnum.getText().equals("null"))
-	        	ecisdnum.setText("");
-        String junk = tokenizer.nextToken(); //status number
-        
-        problemdes.setText(tokenizer.nextToken());
-	        if(problemdes.getText().equals("null"))
-	        	problemdes.setText("");
-        problemres.setText(tokenizer.nextToken());
-	        if(problemres.getText().equals("null"))
-	        	problemres.setText("");
-	    
-	    //campus
-	    String campus = tokenizer.nextToken();
-	    messagets.putMessage("055:" + campus);
-	    
-	    campusbox.setSelectedItem(messagefs.getMessage());
-	    
-        openedbyfield.setText(tokenizer.nextToken());
-	       
-        closedbyfield.setText(tokenizer.nextToken());
-	        
-        model.setText(tokenizer.nextToken());
-	        if(model.getText().equals("null"))
-	        	model.setText("");
-        dateopenedfield.setText(tokenizer.nextToken());
-	        if(dateopenedfield.getText().equals("null"))
-	        	dateopenedfield.setText("");
-        dateclosedfield.setText(tokenizer.nextToken());
-	        if(dateclosedfield.getText().equals("null"))
-	        	dateclosedfield.setText("");
-        fnamefield.setText(tokenizer.nextToken());
-	        if(fnamefield.getText().equals("null"))
-	        	fnamefield.setText("");
-        lnamefield.setText(tokenizer.nextToken());
-	        if(lnamefield.getText().equals("null"))
-	        	lnamefield.setText("");
-        roomnum.setText(tokenizer.nextToken());
-	        if(roomnum.getText().equals("null"))
-	        	roomnum.setText("");
-        phonefield.setText(tokenizer.nextToken());
-	        if(phonefield.getText().equals("null"))
-	        	phonefield.setText("");
+	        if(!message.equalsIgnoreCase("null"))
+	        	prioritybox.setSelectedIndex(Integer.parseInt(message)-1);	
+	        else
+	        	prioritybox.setSelectedIndex(-1);
 	        	
-	    String priority = tokenizer.nextToken();
-	    System.out.println(":" + priority +":");
-	    if(!priority.equals("null"))
-			prioritybox.setSelectedIndex(Integer.parseInt(priority)-1);	
-				       
-	    servicetagfield.setText(tokenizer.nextToken());
-	    
-        if(servicetagfield.getText().equals("null"))
-        	servicetagfield.setText("");
-	    
-	    
-	    messagets.putMessage("003:" + tokenizer.nextToken());
-	    
-	    
-	    assignedtobox.setSelectedItem(messagefs.getMessage().toString());
+	        JLabel priorityboxlabel = new JLabel("Priority:    ");
+	        priorityboxlabel.setForeground(txtColor);
+	        flows[2].add(priorityboxlabel);
+	        flows[2].add(prioritybox);
+	        
+	        if(userlevel > 0)
+	        {
+	        	prioritybox.setEnabled(false);
+	        }
+	        
+	        
+	        roomnum = new JTextField(20);
+	        JLabel roomnumlabel = new JLabel("Room Number:");
+	        roomnumlabel.setForeground(txtColor);
+	        flows[3].add(roomnumlabel);
+	        flows[3].add(roomnum);
+	        
+	        campusbox = new JComboBox(campusoptions);
+	        JLabel campusboxlabel = new JLabel("Campus:");
+	        campusboxlabel.setForeground(txtColor);
+	        flows[4].add(campusboxlabel);
+	        flows[4].add(campusbox);
+	        
+	        phonefield = new JTextField(20);
+	        JLabel phonelabel = new JLabel("Phone Number:");
+	        phonelabel.setForeground(txtColor);
+	        flows[5].add(phonelabel);
+	        flows[5].add(phonefield);
+	        
+	        ecisdnum = new JTextField(20);
+	        JLabel ecisdlabel = new JLabel("Asset number");
+	        ecisdlabel.setForeground(txtColor);
+	        flows[6].add(ecisdlabel);
+	        flows[6].add(ecisdnum);
+	        
+	        model = new JTextField(20); 
+	        JLabel modellabel = new JLabel("Model:                ");
+	        modellabel.setForeground(txtColor);
+	        flows[7].add(modellabel);
+	        flows[7].add(model);
+	        
+	        openedbyfield = new JTextField(20);
+	        openedbyfield.setEditable(false);
+	        JLabel openedbylabel = new JLabel("Opened by:");
+	        openedbylabel.setForeground(txtColor);
+	        flows[8].add(openedbylabel);
+	        flows[8].add(openedbyfield);
+	        
+	        closedbyfield = new JTextField(20);
+	        closedbyfield.setEditable(false);
+	        JLabel closedbylabel = new JLabel("Closed by:");
+	        closedbylabel.setForeground(txtColor);
+	        flows[9].add(closedbylabel);
+	        flows[9].add(closedbyfield);
+	        
+	        dateopenedfield = new JTextField(20);
+	        dateopenedfield.setEditable(false);
+	        JLabel dateopenedlabel = new JLabel("Date Opened:");
+	        dateopenedlabel.setForeground(txtColor);
+	        flows[10].add(dateopenedlabel);
+	        flows[10].add(dateopenedfield);
+	        
+	        dateclosedfield = new JTextField(20);
+	        dateclosedfield.setEditable(false);
+	        JLabel dateclosedlabel = new JLabel("Date Closed:");
+	        dateclosedlabel.setForeground(txtColor);
+	        flows[11].add(dateclosedlabel);
+	        flows[11].add(dateclosedfield);
+	        
+	        servicetagfield = new JTextField(20);
+	        JLabel servicetaglabel = new JLabel("Service Tag:");
+	        servicetaglabel.setForeground(txtColor);
+	        flows[12].add(servicetaglabel);
+	        flows[12].add(servicetagfield);
+	        
+	        JTextField ttcfield = new JTextField(20);
+	        ttcfield.setEditable(false);
+	        JLabel ttclabel = new JLabel("Time to Completion");
+	        ttclabel.setForeground(txtColor);
+	        flows[13].add(ttclabel);
+	        flows[13].add(ttcfield);
+	        //gets the TTC only if the status is pending closed or closed.
+	        if((statusnum == 1) || (statusnum == 4))
+	        {
+	        	message = "110:" + workordernumber;
+	        	messagets.putMessage(message);
+	        	message = messagefs.getMessage().toString();
+	        	if(!message.equalsIgnoreCase("null"))
+	       			ttcfield.setText(message);
+	        }
+	        //get a list of techs from the server
+	        message = "025:";
+	        messagets.putMessage(message);
+	        String assignedtooptions[] = messagefs.getMessage().toString().split(",");
+	        Arrays.sort(assignedtooptions);
+	        
+	        assignedtobox = new JComboBox(assignedtooptions);
+	
+	        JLabel assignedtolabel = new JLabel("Assigned To:");
+	        assignedtolabel.setForeground(txtColor);
+	        
+	        flows[14].add(assignedtolabel);
+	        flows[14].add(assignedtobox);
+	        
+	        JPanel center_panel5 = new JPanel();
+	        center_panel5.setBackground(bgColor);
+	        center_panel5.setLayout(new BorderLayout());
+	        panel5.add(center_panel5,BorderLayout.CENTER);
+	        
+	        
+	        //---------------------------------------------------------
+	        //the panels to set up the west JTextArea properly
+	        
+	        JPanel west_center_panel5 = new JPanel();
+	        west_center_panel5.setBackground(bgColor);
+	        west_center_panel5.setLayout(new BorderLayout());
+	        panel5.add(west_center_panel5,BorderLayout.WEST);
+	        
+	        JPanel flowdescriptionlabel = new JPanel();
+	        flowdescriptionlabel.setBackground(bgColor);
+	        flowdescriptionlabel.setLayout(new FlowLayout());
+	        west_center_panel5.add(flowdescriptionlabel,BorderLayout.NORTH);
+	        
+	        JLabel problemdeslabel = new JLabel("Problem description:");
+	        problemdeslabel.setForeground(txtColor);
+	        flowdescriptionlabel.add(problemdeslabel);
+	        
+	        JPanel flowproblemdes = new JPanel();
+	        flowproblemdes.setBackground(bgColor);
+	        flowproblemdes.setLayout(new GridLayout(2,1));
+	        west_center_panel5.add(flowproblemdes,BorderLayout.CENTER);
+	        
+	        JLabel blanklabel = new JLabel("                  ");
+	        blanklabel.setForeground(txtColor);
+	        west_center_panel5.add(blanklabel,BorderLayout.WEST);
+	        
+	        problemdes = new JTextArea(10,25);
+	        problemdes.setEditable(false);
+	        problemdes.setLineWrap(true);
+	        problemdes.setWrapStyleWord(true);
+	        JScrollPane scrolledtext = new JScrollPane(problemdes);
+	        flowproblemdes.add(scrolledtext);
+	        
+	        problemadddes = new JTextArea(10,25);
+	        problemadddes.setLineWrap(true);
+	        problemadddes.setWrapStyleWord(true);
+	        JScrollPane scrolledtext4 = new JScrollPane(problemadddes);
+	        flowproblemdes.add(scrolledtext4);
+	        
+	        
+	        //--------------------------------------------------------------------
+	        //same as above, but the the JTextArea east
+	        JPanel east_center_panel5 = new JPanel();
+	        east_center_panel5.setBackground(bgColor);
+	        east_center_panel5.setLayout(new BorderLayout());
+	        panel5.add(east_center_panel5,BorderLayout.EAST);
+	        
+	        JPanel flowresolutionlabel = new JPanel();
+	        flowresolutionlabel.setBackground(bgColor);
+	        flowresolutionlabel.setLayout(new FlowLayout());
+	        east_center_panel5.add(flowresolutionlabel,BorderLayout.NORTH);
+	        
+	        JLabel resolutionlabel = new JLabel("Problem resolution:                  ");
+	        resolutionlabel.setForeground(txtColor);
+	        flowresolutionlabel.add(resolutionlabel);
+	        
+	        JPanel flowproblemres = new JPanel();
+	        flowproblemres.setBackground(bgColor);
+	        flowproblemres.setLayout(new GridLayout(2,1));
+	        east_center_panel5.add(flowproblemres,BorderLayout.CENTER);
+	        
+	        JLabel blanklabel2 = new JLabel("                     ");
+	        blanklabel2.setForeground(txtColor);
+	        east_center_panel5.add(blanklabel2,BorderLayout.EAST);
+	        
+	        problemres = new JTextArea(10,25);
+	        problemres.setEditable(false);
+	        problemres.setLineWrap(true);
+	        problemres.setWrapStyleWord(true);
+	        JScrollPane scrolledtext2 = new JScrollPane(problemres);
+	        flowproblemres.add(scrolledtext2);
+	        
+	        problemaddres = new JTextArea(10,25);
+	        problemaddres.setLineWrap(true);
+	        problemaddres.setWrapStyleWord(true);
+	        JScrollPane scrolledtext3 = new JScrollPane(problemaddres);
+	        flowproblemres.add(scrolledtext3);
+	        
+	        
+	        
+	        south_panel5 = new JPanel();
+	        south_panel5.setBackground(bgColor);
+	        south_panel5.setLayout(new BorderLayout());
+	        panel5.add(south_panel5,BorderLayout.SOUTH);
+	        
+	        JPanel button_south_panel5 = new JPanel();
+	        button_south_panel5.setBackground(bgColor);
+	        button_south_panel5.setLayout(new FlowLayout());
+	        south_panel5.add(button_south_panel5,BorderLayout.NORTH);
+	        
+	        
+	        
+	        //the only thing that varies between the pending open and the pending close
+	        //is what buttons are on the GUI, and what they do.
+	        
+	        if(statusnum == 0) //pending open
+	        {
+	        	JButton markopenbutton = new JButton("Open for Technicians");
+	        	markopenbutton.setForeground(txtColor);
+	        	button_south_panel5.add(markopenbutton);
+	        	markopenbutton.addActionListener(this);
 	        	
-	     //this translates the opened by and closed by from the USER_IDs
-	     //to the usernames 
-	    if(closedbyfield.getText().equals("-1"))
-	    {
-	    	closedbyfield.setText("");
-	    }
-	    else
-	    {
-	    	message = "003:" + closedbyfield.getText();
-	    	messagets.putMessage(message);
-	    	String temp_user = messagefs.getMessage().toString();
-	    	closedbyfield.setText(temp_user);
-	    } 
-	    	
-	    if(openedbyfield.getText().equals("null"))
-	    {
-	    	openedbyfield.setText("");
-	    }
-	    else
-	    {
-	    	message = "003:" + openedbyfield.getText();
-	    	messagets.putMessage(message);
-	    	String temp_user = messagefs.getMessage().toString();
-	    	openedbyfield.setText(temp_user);
-	    } 	
-	    
-	    JMenu file = new JMenu("File");
-	    
-	    
-		
-		JMenuItem print = new JMenuItem("Print");
-		print.addActionListener(this);
-		file.add(print);
-		
-		// creates the menu bar
-		JMenuBar mBar = new JMenuBar(); 
-		mBar.add(file);
-		setJMenuBar(mBar);
-
-	    	
-	    	
-		this.setVisible(true);
+	        	JButton closebutton = new JButton("Close");
+	        	closebutton.setForeground(txtColor);
+		    	closebutton.addActionListener(this);
+		    	button_south_panel5.add(closebutton);
+	        }
+	        else if(statusnum == 1) // pending close
+	        {
+	        	JButton openWObuttontech = new JButton("Open for Technicians");
+	        	openWObuttontech.setForeground(txtColor);
+		        button_south_panel5.add(openWObuttontech);
+		        openWObuttontech.addActionListener(this);
+		        
+		        JButton savebutton = new JButton("Save");
+		    	savebutton.setForeground(txtColor);
+		    	savebutton.addActionListener(this);
+		    	button_south_panel5.add(savebutton);
+		        
+		    	JButton closebutton = new JButton("Close");
+		    	closebutton.setForeground(txtColor);
+		    	closebutton.addActionListener(this);
+		    	button_south_panel5.add(closebutton);
+		    	//adds the checkbox and the date field that the email was sent.
+		    	
+		    	cb = new JCheckBoxMenuItem("Email Sent");
+		    	cb.setBackground(bgColor);
+		    	cb.setForeground(txtColor);
+		    	cb.addActionListener(this);
+		    	flows[16].add(cb);
+		    	
+		    	messagets.putMessage("094:" +workordernumber);
+		    	String data = messagefs.getMessage().toString();
+		    	
+		    	if(data.equalsIgnoreCase("1"))
+		    	{
+		    		cb.setState(true);
+		    	}
+		    	JLabel emailsendfieldlabel = new JLabel("Date Email Sent");
+		    	emailsendfieldlabel.setForeground(txtColor);
+		    	dateemailsent = new JTextField(20);
+		    	dateemailsent.setEditable(false);
+		    	flows[17].add(emailsendfieldlabel);
+		    	flows[17].add(dateemailsent);
+		    	
+		    	if(cb.getState() == true)
+		    	{
+		    		messagets.putMessage("091:" + workordernumber);
+		    		data = messagefs.getMessage().toString();
+		    		dateemailsent.setText(data);
+		    	}
+	        }
+	        else if(statusnum == 3) // work order is open on the Technician's screen
+	        {
+	        	JButton closebutton = new JButton("Close");
+	        	closebutton.setForeground(txtColor);
+		    	closebutton.addActionListener(this);
+		    	button_south_panel5.add(closebutton);
+		    	
+		    	JButton savebutton = new JButton("Save");
+		    	savebutton.setForeground(txtColor);
+		    	savebutton.addActionListener(this);
+		    	button_south_panel5.add(savebutton);
+	        }
+			else if(statusnum == 4)
+			{
+				//set them all editable to false;
+				fnamefield.setEditable(false);
+				lnamefield.setEditable(false);
+				wonum.setEditable(false);
+				roomnum.setEditable(false);
+				phonefield.setEditable(false);
+				ecisdnum.setEditable(false);
+				model.setEditable(false);
+				openedbyfield.setEditable(false);
+				closedbyfield.setEditable(false);
+				dateopenedfield.setEditable(false);
+				dateclosedfield.setEditable(false);
+				servicetagfield.setEditable(false);      
+				problemdes.setEditable(false);
+				problemres.setEditable(false);
+			}       
+	        // populates the fields with info from the server.
+	        
+	        message = "011:" + workordernumber;
+	        messagets.putMessage(message);
+	        String data = messagefs.getMessage().toString();
+	        System.out.println(data);
+	        StringTokenizer tokenizer = new StringTokenizer(data,",");
+	        
+	        
+	        wonum.setText(tokenizer.nextToken());
+	       	 	if(wonum.getText().equals("null"))
+	       	 		wonum.setText("");
+	       	 	else
+	       	 		setTitle("Maginot Client - WO# " + wonum.getText());
+	       	 		
+	        ecisdnum.setText(tokenizer.nextToken());
+		        if(ecisdnum.getText().equals("-1"))
+		        	ecisdnum.setText("");
+		        else if(ecisdnum.getText().equals("null"))
+		        	ecisdnum.setText("");
+	        String junk = tokenizer.nextToken(); //status number
+	        
+	        problemdes.setText(tokenizer.nextToken());
+		        if(problemdes.getText().equals("null"))
+		        	problemdes.setText("");
+	        problemres.setText(tokenizer.nextToken());
+		        if(problemres.getText().equals("null"))
+		        	problemres.setText("");
+		    
+		    //campus
+		    String campus = tokenizer.nextToken();
+		    messagets.putMessage("055:" + campus);
+		    
+		    campusbox.setSelectedItem(messagefs.getMessage());
+		    
+	        openedbyfield.setText(tokenizer.nextToken());
+		       
+	        closedbyfield.setText(tokenizer.nextToken());
+		        
+	        model.setText(tokenizer.nextToken());
+		        if(model.getText().equals("null"))
+		        	model.setText("");
+	        dateopenedfield.setText(tokenizer.nextToken());
+		        if(dateopenedfield.getText().equals("null"))
+		        	dateopenedfield.setText("");
+	        dateclosedfield.setText(tokenizer.nextToken());
+		        if(dateclosedfield.getText().equals("null"))
+		        	dateclosedfield.setText("");
+	        fnamefield.setText(tokenizer.nextToken());
+		        if(fnamefield.getText().equals("null"))
+		        	fnamefield.setText("");
+	        lnamefield.setText(tokenizer.nextToken());
+		        if(lnamefield.getText().equals("null"))
+		        	lnamefield.setText("");
+	        roomnum.setText(tokenizer.nextToken());
+		        if(roomnum.getText().equals("null"))
+		        	roomnum.setText("");
+	        phonefield.setText(tokenizer.nextToken());
+		        if(phonefield.getText().equals("null"))
+		        	phonefield.setText("");
+		        	
+		    String priority = tokenizer.nextToken();
+		    System.out.println(":" + priority +":");
+		    if(!priority.equals("null"))
+				prioritybox.setSelectedIndex(Integer.parseInt(priority)-1);	
+					       
+		    servicetagfield.setText(tokenizer.nextToken());
+		    
+	        if(servicetagfield.getText().equals("null"))
+	        	servicetagfield.setText("");
+		    
+		    
+		    messagets.putMessage("003:" + tokenizer.nextToken());
+		    
+		    
+		    assignedtobox.setSelectedItem(messagefs.getMessage().toString());
+		        	
+		     //this translates the opened by and closed by from the USER_IDs
+		     //to the usernames 
+		    if(closedbyfield.getText().equals("-1"))
+		    {
+		    	closedbyfield.setText("");
+		    }
+		    else
+		    {
+		    	message = "003:" + closedbyfield.getText();
+		    	messagets.putMessage(message);
+		    	String temp_user = messagefs.getMessage().toString();
+		    	closedbyfield.setText(temp_user);
+		    } 
+		    	
+		    if(openedbyfield.getText().equals("null"))
+		    {
+		    	openedbyfield.setText("");
+		    }
+		    else
+		    {
+		    	message = "003:" + openedbyfield.getText();
+		    	messagets.putMessage(message);
+		    	String temp_user = messagefs.getMessage().toString();
+		    	openedbyfield.setText(temp_user);
+		    } 	
+		    
+		    JMenu file = new JMenu("File");
+		    
+		    
+			
+			JMenuItem print = new JMenuItem("Print");
+			print.addActionListener(this);
+			file.add(print);
+			
+			// creates the menu bar
+			JMenuBar mBar = new JMenuBar(); 
+			mBar.add(file);
+			setJMenuBar(mBar);
+			this.setVisible(true);
+    	}
 	}
 	
 	public void actionPerformed(ActionEvent e)

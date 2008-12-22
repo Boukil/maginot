@@ -1966,16 +1966,23 @@ class Operations extends Thread
 							sql = "SELECT priority FROM workorders WHERE work_order_number=" + data + ";";
 							pstmt = connection.prepareStatement(sql);
 							rs = pstmt.executeQuery();
-							
-							rs.next();
-							priority = rs.getString(1);
-							
-							if(priority == null)
+							try
 							{
-								priority = "null";
+								rs.next();
+								priority = rs.getString(1);
+								
+								if(priority == null)
+								{
+									priority = "null";
+								}
+								
+								messagetco.putMessage(priority);
+							}
+							catch(java.sql.SQLException f)
+							{
+								messagetco.putMessage("NoSuchWorkorder");
 							}
 							
-							messagetco.putMessage(priority);
 							
 						break;
 						case 140://sets the background color for the current user
@@ -2022,38 +2029,6 @@ class Operations extends Thread
 							}
 							messagetco.putMessage(color);
 						break;
-						//15x will be used for database cleanup
-					/*	case 150:
-							sql = "SELECT * FROM workorders where status=1;";	
-							pstmt = connection.prepareStatement(sql);
-							rs = pstmt.executeQuery();		
-							md = rs.getMetaData();
-							
-							nColumns = md.getColumnCount();
-							String names[] = new String[nColumns];
-							
-							for(int i=1;i<=nColumns;i++)
-							{
-								names[i-1] = (md.getColumnLabel(i));
-							}
-							for(int c = 0; c < nColumns; c++)
-							{
-								try
-								{
-									sql = "UPDATE workorders SET " + names[c]+"=null WHERE "+names[c] + "='null';";
-									pstmt = connection.prepareStatement(sql);
-									pstmt.executeUpdate();
-								}
-								catch(com.mysql.jdbc.MysqlDataTruncation e)
-								{
-									//the field type isn't a string
-								}
-								catch(com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e)
-								{
-									//field type can't be null... in this and the above catch... whatever.
-								}
-							}
-						break;*/
 					}
 					connection.close();
 			    } 

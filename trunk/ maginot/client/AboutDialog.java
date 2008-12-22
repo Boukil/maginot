@@ -26,7 +26,7 @@ public class AboutDialog extends JFrame implements ActionListener
         contentPane.add(OK, BorderLayout.SOUTH);
         contentPane.setBackground(Color.WHITE);
         
-        northtext1.append("Maginot Client v2.9.6\n");
+        northtext1.append("Maginot Client v3.0.0\n First Public Release\n");
         northtext1.append("Programmed by: Steven Larizza\n\n\n");
         
         
